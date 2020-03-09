@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { useAnimationFrame } from '../utils/utils.js';
 import { ThemeContext } from '../App.js';
 import './style.css';
 

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext} from 'react';
+import React, { useRef, useContext} from 'react';
 import { getRandNum, useAnimationFrame } from '../utils/utils.js';
 import { ThemeContext } from '../App.js';
 import Title from './title.js';
@@ -11,12 +11,12 @@ export default function Main(){
     const canvasText = useRef();
 
     let ctxNum, ctxText, direction = "down", paused = false, fontSize = 16, 
-        hPos = 168, hDirection = getRandNum(0,1) === 1 ? 'down' : 'up', hTime = new Date();
+        hPos = 168, hDirection = getRandNum(0,1) === 1 ? 'down' : 'up';
 
     const text = getMainText();
     const nums = new Array(text.length - 0 + 1).fill().map((item, index) => 0 + index);
     let pos = -168;
-    let nextPause = new Date(), startPause;
+    let nextPause = new Date(), startPause, blinkStart = new Date();
 
     useAnimationFrame(deltaTime => {
         if(!ctxNum){
@@ -35,15 +35,15 @@ export default function Main(){
             hPos = getRandNum(0, canvasText.current.height);
         }
         else{
+            let now = new Date();
+
             ctxNum.clearRect(0, 0, canvasNums.current.width, canvasNums.current.height);
             ctxText.clearRect(0, 0, canvasText.current.width, canvasText.current.height);
 
             if(direction === "down"){
                 pos += 56
             }
-            else{
-                let now = new Date();
-    
+            else{    
                 if(!paused){
                     pos -= 28;
     
@@ -90,12 +90,22 @@ export default function Main(){
                 }
             }
             else{
-                console.log(pos + ' ' + hPos);
                 hDirection = getRandNum(0, 1) ? 'up' : 'down';
             }
 
             ctxText.shadowBlur = 0;
-            ctxText.globalAlpha = 0.5;
+            if(paused){
+                if(now - blinkStart > 50){
+                    ctxText.globalAlpha = 0.1;
+                    blinkStart = new Date();
+                }
+                else{
+                    ctxText.globalAlpha = 0.5;
+                }
+            }
+            else{
+                ctxText.globalAlpha = 0.5;
+            }
             ctxText.fillRect(0, hPos, canvasText.current.width, fontSize);
             ctxText.globalAlpha = 1;
             ctxText.shadowBlur = 8;

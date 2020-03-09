@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 
 export function getRandNum(min, max) {
     return Math.floor(Math.random() * max) + min;

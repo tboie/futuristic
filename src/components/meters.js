@@ -117,7 +117,7 @@ function Meter(){
                     border: "2px solid " + theme.secondary,
                 }}
             />
-            <MeterBox numLines={numLines} size={'30px'} numLines={numLines}/>
+            <MeterBox numLines={numLines} size={'30px'}/>
       </div>
     )
   }
